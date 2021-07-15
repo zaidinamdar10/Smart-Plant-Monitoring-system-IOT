@@ -3,8 +3,8 @@
  
 String apiKey = "10MYKGRQMYPEZUDB";     //  Enter your Write API key from ThingSpeak
  
-const char *ssid =  "Tp link";     // replace with your wifi ssid and wpa2 key
-const char *pass =  "zaidqwerty256";
+const char *ssid =  "*****";     // replace with your wifi ssid and wpa2 key
+const char *pass =  "*****";
 const char* server = "api.thingspeak.com";
  
 #define DHTPIN 4        //pin where the dht22 is connected d2 is gpio 4
