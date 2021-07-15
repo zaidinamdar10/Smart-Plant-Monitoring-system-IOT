@@ -1,0 +1,85 @@
+#define BLYNK_PRINT Serial   
+#include <Blynk.h>
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+#include <DHT.h>
+//#include <SimpleTimer.h>
+#define DHTPIN 4                              // input pin used for the dht 22 i.e in this case its d2 which is gpio 4      
+#define DHTTYPE DHT22                         //defining the type of dht sensor used
+DHT dht(DHTPIN, DHTTYPE);
+
+// You should get Auth Token in the Blynk App.
+// Go to the Project Settings (nut icon).
+char auth[] = "hAM9khi8mZJEtxcXiuggv7I27QPTFzfh";  //authentication
+
+// Your WiFi credentials.
+// Set password to "" for open networks.
+char ssid[] = "Tp link";
+char pass[] = "zaidqwerty256";
+int sensor = A0; //soil moisture sensor
+int mq135 = A0; // smoke sensor is connected with the analog pin A0 
+const int LDR = D1; // Defining LDR pin
+int input_value = 0; // variable for light 
+//BlynkTimer timer;
+
+void setup()
+{
+  Serial.begin(9600);
+  Blynk.begin(auth,ssid,pass);
+  pinMode(sensor, INPUT);
+ // pinMode(mq135, INPUT);
+  dht.begin();
+
+}
+
+void loop()
+{
+int sensorVal = analogRead(sensor);
+int data = analogRead(mq135);
+float h = dht.readHumidity();
+float t = dht.readTemperature();
+
+  
+  if(isnan(h) || isnan(t)){
+    Serial.println("Failed to read from DHT");
+    return; 
+  }
+  Serial.print("Hum:");
+  Serial.print(h);
+  Serial.print("%, Tem:");
+  Serial.print(t);
+
+  delay(20);
+  // You can send any value at any time.
+  // Please don't send more that 10 values per second.
+  Blynk.virtualWrite(V5, h);
+  Blynk.virtualWrite(V6, t);
+
+Serial.println(sensorVal);
+if(sensorVal <100)
+{
+Serial.println("WATER CONTENT IS LOW");
+Blynk.notify("water content is low");
+delay(1000);
+}
+if(sensorVal > 200)
+{
+Serial.println("Watering Done");
+Blynk.notify("watering done");
+delay(2000);
+}
+//function for smoke detection by mq-135 air auality sensor
+Blynk.virtualWrite(V1, data);
+if(data>300){                     //threshold value for good air quality
+ Blynk.notify("Smoke detected");
+}
+//Function/ program for light intensity
+input_value = analogRead(LDR);
+//if(input_value<200)
+//Blynk.notify("Light intensity");
+delay(100);
+
+Blynk.virtualWrite(V7, LDR);
+
+Blynk.run();
+}
