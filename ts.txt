@@ -1,3 +1,4 @@
+//code to upload data on thingspeak / cloud
 #include <ESP8266WiFi.h>
 #include<DHT.h>
  
