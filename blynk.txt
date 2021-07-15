@@ -14,8 +14,8 @@ char auth[] = "hAM9khi8mZJEtxcXiuggv7I27QPTFzfh";  //authentication
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-char ssid[] = "Tp link";
-char pass[] = "zaidqwerty256";
+char ssid[] ="*****";
+char pass[] = "******";
 int sensor = A0; //soil moisture sensor
 int mq135 = A0; // smoke sensor is connected with the analog pin A0 
 const int LDR = D1; // Defining LDR pin
